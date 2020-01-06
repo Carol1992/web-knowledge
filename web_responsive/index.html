@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>web responsive</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      .images {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .image {
+        width: 80%;
+      }
+      img {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="images">
+      <!-- <img srcset="demo-320.jpg 320w,
+                   demo-640.jpg 480w,
+                   demo-800.jpg 800w,
+                   demo-1024.jpg 1024w,
+                   demo-1280.jpg 1280w,
+                   demo-1920.jpg 1920w"
+          sizes="(max-width: 320px) 280px,
+                 (max-width: 640px) 440px,
+                 (max-width: 800px) 760px,
+                 (max-width: 1024px) 960px,
+                 (max-width: 1280px) 1240px,
+                 1920px"
+          src="demo-1920.jpg" alt="Elva dressed as a fairy"> -->
+          <div class="image">
+              <img srcset="demo-320.jpg,
+                            demo-640.jpg 1.5x,
+                            demo-800.jpg 2x,
+                            demo-1024.jpg 3x,
+                            demo-1280.jpg 4x,
+                            demo-1920.jpg 6x"
+                  src="demo-1920.jpg" alt="Elva dressed as a fairy">
+          </div>
+    </div>
+    <script>
+      
+    </script>
+  </body>
+</html>

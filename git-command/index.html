@@ -1,0 +1,107 @@
+
+<html>
+  <title>git operation</title>
+  <meta charset="utc-8">
+  <style>
+    .container{width:60%; margin-left: 20%;}
+    .section {border: 1px dashed #bbb; padding-left: 15px;}
+  </style>
+  <body>
+    <div class="container">
+      <div class="section s-1">
+        <img src="gitdev.jpg" alt="">
+        <p>master: 对项目进行tag或发布版本等操作</p>
+        <p>develop: 从master分支上检出，团队成员一般不直接更改该分支，而是分别从该分支检出自己的feature分支，开发完成后将自己的分支merge到develop分支</p>
+        <p>release: 从develop分支上检出，该分支用作发版前的测试，可进行简单的bug修复。如果bug比较多，但已修改了一些，可以merge回develop分支由其他分支进行bug修复。此分支测试完成后，需要同时merge到master和develop分支上</p>
+        <p>feature: 从develop分支上检出，团队成员中每个人维护一个自己的feature分支，开发完成后merge回develop分支</p>
+        <p>fix: 由develop分支检出，用于bug修复，bug修复完成需merge回develop分支，并将其删除，属于临时性分支</p>
+        <p>hotfix: 该分支由master分支检出，进行线上版本的bug修复，修复完成后merge回master分支，并merge到develop分支，并将其删除，也属于临时性分支</p>
+      </div>
+      <div class="section s-2">
+        <p>以图形化的方式显示提交历史的关系: git log --graph</p>
+        <p>看所有commit记录: git log --pretty=oneline</p>
+        <p>看文件A的commit记录: git log A</p>
+        <p>看文件A每次提交的diff: git log -p A</p>
+        <p>看某次commit的所有改动: git show commit_id</p>
+        <p>看文件A在某次commit中的改动: git show commit_id A</p>
+        <p>回退到某次commit_id对应的代码，或者说撤销之前的commit: git reset --hard commit_id (不保留修改), git reset --soft commit_id (保留修改)</p>
+        <p>回退到某次commit_id，修改代码后提交，但远程代码的commit_id比本地的新，强制推送: git push --force</p>
+        <p>查看一次commit中修改了哪些文件：git show --name-only</p>
+      </div>
+      <div class="section s-3">
+        <p>看当前工作目录的状态: git status</p>
+        <p>若修改了文件A想还原修改: git checkout -- A</p>
+        <p>看文件修改后的差异: git diff</p>
+      </div>
+      <div class="section s-4">
+        <p>列出所有标签: git tag</p>
+        <p>查看标签版本信息: git show [tagname]</p>
+        <p>切换标签: git checkout [tagname]，如果要在该tag对应的代码上进行修改，需要新建一个分支，这样会从该tag创建一个分支，然后就和普通的Git操作一样了</p>
+        <p>删除标签: git tag -d [tagname]</p>
+        <p>给指定的commit_id补打标签: git tag [tagname] commit_id</p>
+        <p>git tag -a [tagname] -m "blablabla..."可以指定标签信息</p>
+        <p>标签提交到服务器: git push origin [tagname]</p>
+        <p>将本地所有标签一次性提交: git push origin --tags</p>
+      </div>
+      <div class="section s-5">
+        <p>查看当前分支所有提交者及其提交次数: git log | grep "^Author: " | awk '{print $2}' | sort | uniq -c | sort -k1,1nr</p>
+        <p>按人员统计代码量: git log --format='%aN' | sort -u | while read name; do echo -en "$name\t"; git log --author="$name" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -; done</p>
+        <p>指定用户名、指定时间段内代码量差异: git log --since==2018-8-23 --until==2019-2-3 --author="repos"--pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n",add, subs, loc }'</p>
+      </div>
+      <div class="section s-6">
+        <p>切换分支: git checkout [branch-name]</p>
+        <p>新建分支: git branch [new-branch-name]</p>
+        <p>新建并切换分支: git checkout -b [new-branch-name]</p>
+        <p>合并分支: git merge [branch-name]</p>
+        <p>删除分支: git branch -d [branch-name]</p>
+        <p>推送分支到服务器: git push origin [branch-name]</p>
+        <p>查看远程分支: git branch -a</p>
+        <p>删除远程分支: git push origin --delete [branch-name]</p>
+      </div>
+      <div class="section s-7">
+        <p>储存变更，暂时不提交到服务器，切换到其他分支继续工作: git stash</p>
+        <p>查看现有的stash: git stash list</p>
+        <p>重新应用stash: git stash apply stash@{2}</p>
+        <p>移除stash: git stash drop stash@{2}</p>
+      </div>
+      <div class="section s-8">
+        git默认是不区分大小写的，意思是你修改一个文件名/文件夹的时候，git status 是不会提示你有修改的 
+        可以通过git config --get core.ignorecase 查看默认配置
+        通过git config core.ignorecase false设置为区分大小写
+      </div>
+      <div class="section s-9">
+        删除本地文件，重新从远程dev_carol分支获取: git checkout origin/dev_carol package.json
+        删除本地分支的所有内容，重新从远程dev_carol分支获取: git checkout origin/dev_carol
+        删除本地全部内容，重新从远程获取: git checkout origin
+      </div>
+      <div class="section s-10">
+        pull和fetch区别: git pull = git fetch + git merge
+        查看远程仓库地址: git remote -v
+        第一次从远程仓库检出文件：
+        方法一：
+        1. 新建文件夹，执行 git init
+        2. 执行 git remote add origin hayashiharu@linqing.local:/Users/hayashiharu/Desktop/test.git
+        3. 执行 git fetch
+        4. 执行 git branch -a 获取所有远程分支
+        5. 执行 git checkout -b 新建分支名 远程分支名
+        6. 执行 git pull
+        7. 之后就可以执行 git add, git commit, git push 等命令了
+
+        方法二：
+        1. 执行 git clone hayashiharu@linqing.local:/Users/hayashiharu/Desktop/test.git 就可以把master分支克隆下来
+        2. 执行 git branch -a 获取所有远程分支
+        3. 执行 git checkout -b 新建分支名 远程分支名
+        4. 执行 git pull
+        5. 之后就可以执行 git add, git commit, git push 等命令了
+      </div>
+      <div class="section s-11">
+        <p>git add, git commit, git push 任意一步想回退应该怎么操作？</p>
+        <p>应使用git revert撤消公共分支上的更改，而应保留git reset以撤消私有分支上的更改</p>
+        <p>git add: git reset HEAD [filename]</p>
+        <p>git commit: git reset [commit_id]</p>
+        <p>git push 保留工作区内容: git reset --soft [commit_id] + git push -f</p>
+        <p>git push 不保留工作区内容: git reset --hard [commit_id] + git push -f</p>
+      </div>
+    </div>
+  </body>
+  </html>

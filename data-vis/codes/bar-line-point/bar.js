@@ -1,0 +1,5 @@
+function drawBar() {
+
+}  
+
+export {drawBar}

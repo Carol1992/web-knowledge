@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>css-flex</title>
+    <meta charset="utf-8">
+    <style>
+      .parent {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        height: 400px;
+      }
+      .child {
+        border: 1px dashed blue;
+        flex: 1;
+        height: 50px;
+      }
+      .child-2 {
+        flex: 2;
+      }
+      .child-2-1 {
+        flex: 2;
+        order: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex">
+      <div class="parent">
+        <div class="child"></div>
+        <div class="child child-2">lll</div>
+      </div>
+      <div class="parent">
+          <div class="child"></div>
+          <div class="child"></div>
+          <div class="child child-2-1">lll</div>
+          <div class="child"></div>
+          <div class="child"></div>
+          <div class="child"></div>
+        </div>
+    </div>
+  </body>
+</html>

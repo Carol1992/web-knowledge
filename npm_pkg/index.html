@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>npm package</title>
+    <meta charset="utf-8">
+    
+  </head>
+  <body>
+    <div class="npm">
+      <div>
+        <p>npm镜像源管理工具：sudo npm i -g nrm</p>
+        <p>nrm ls</p>
+        <p>nrm test</p>
+        <p>nrm use [镜像源名称]</p>
+      </div>
+      <div>
+        <p>下载cnpm并将仓库设置为淘宝镜像：sudo npm i -g cnpm --registry=https://registry.npm.taobao.org</p>
+      </div>
+      <div>
+        <p>获得当前镜像源：npm get registry</p>
+        <p>设置镜像源：npm set registry https://registry.npmjs.org/</p>
+        <p>在公司内部的话将镜像源指向公司内部的npm仓库</p>
+      </div>
+      <div>
+        <p>node 版本管理工具：nvm 和 n</p>
+        <p>安装：brew install nvm / npm i -g n</p>
+        <p>n的使用：n 版本号 => 下载某个版本的node; n latest => 下载最新版本; n => 切换node版本; n rm 版本号 => 删除该版本的node; n use 版本号 index.js => 使用指定的node版本来执行index.js脚本</p>
+      </div>
+      <div>
+        <p>npm包版本管理工具：使用package-lock.json将依赖版本锁死</p>
+        <ul>
+          <li>波浪符号tilde（~): 只影响第三位，用于bug修复。~1.2.3 会自动匹配到1.2.x如1.2.10，而不会匹配1.3.0。</li>
+          <li>插入符号caret (^): 影响Y.Z，对原有功能不破坏。^1.2.3会自动匹配1.x.x如1.10.10,而不会匹配2.0.0</li>
+          <li>npm 5.4.2版本后, 如果改了package.json，且package.json和lock文件不同，那么执行`npm i`时npm会根据package中的版本号以及语义含义去下载最新的包，并更新至lock。</li>
+          <li>平时开发过程中要注意提交自动生成的package-lock.json文件锁定版本</li>
+          <li>查找全局安装的npm包：npm list -g --depth=0</li>
+        </ul>
+      </div>
+      <div>
+        <p>npm包的命名规则：@linqing/mc-charts</p>
+        <p>如何提交npm包到仓库</p>
+        <ol>
+          <li>npm init 或者 npm init --scope=linqing</li>
+          <li>npm login</li>
+          <li>npm publish --access=public</li>
+          <li>npm unpublish @linqing/mc-charts@version</li>
+          <li>npm cache clear 清空NPM本地缓存</li>
+          <li>npm update @linqing/mc-charts 本地模块更新到新版本</li>
+        </ol>
+        <p>更新自己写的npm包</p>
+        <ol>
+          <li>查看已发布的包的版本：npm view @linqing/mc-charts versions</li>
+          <li>本地更新包的版本：npm version [update_type]; update_type 的值有：patch, minor, major</li>
+          <li>发布到远程：npm publish</li>
+        </ol>
+      </div>
+      <div>
+        <p>如何在macos建立一个npm仓库：verdaccio</p>
+        <a href="https://liaolongdong.com/2019/01/24/build-private-package.html">使用verdaccio搭建npm私有仓库</a>
+      </div>
+      <div>
+        <p>版权：https://juejin.im/post/5ab3f77df265da2392364341</p>
+        <ol>
+          <li>
+            使用 npm: >=5.1 版本, 保持 package-lock.json 文件默认开启配置, 不要手动修改 package-lock.json
+          </li>
+          <li>
+            初始化：初始化项目时使用 npm install <package> 安装依赖包, 默认保存 ^X.Y.Z 依赖 range 到 package.json中; 提交 package.json, package-lock.json, 不要提交 node_modules 目录
+          </li>
+          <li>
+            初始化：项目成员首次 checkout/clone 项目代码后，执行一次 npm install 安装依赖包
+          </li>
+        </ol>
+        升级依赖包:
+        升级小版本: 本地执行 npm update 升级到新的小版本
+        升级大版本: 本地执行 npm install <package-name>@<version> 升级到新的大版本
+        也可手动修改 package.json 中版本号为要升级的版本(大于现有版本号)并指定所需的 semver, 然后执行 npm install
+        本地验证升级后新版本无问题后，提交新的 package.json, package-lock.json 文件
+
+        降级依赖包:
+        正确: npm install <package-name>@<old-version> 验证无问题后，提交 package.json 和 package-lock.json 文件
+        错误: 手动修改 package.json 中的版本号为更低版本的 semver, 这样修改并不会生效，因为再次执行 npm install 依然会安装 package-lock.json 中的锁定版本
+        
+        删除依赖包:
+        Plan A: npm uninstall <package> 并提交 package.json 和 package-lock.json
+        Plan B: 把要卸载的包从 package.json 中 dependencies 字段删除, 然后执行 npm install 并提交 package.json 和 package-lock.json
+        任何时候有人提交了 package.json, package-lock.json 更新后，团队其他成员应在 svn update/git pull 拉取更新后执行 npm install 脚本安装更新后的依赖包
+      </div>
+    </div>
+    <script>
+      
+    </script>
+  </body>
+</html>

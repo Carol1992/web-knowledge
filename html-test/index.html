@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    
+  </head>
+  <body>
+    <div class="form">
+      <form action="">
+          <input 
+            type="text" 
+            value="admin" 
+            style="position: absolute;z-index: -1;" 
+            disabled 
+            autocomplete = "off"/><!-- 这个username会被浏览器记住，我随便用个admin-->
+          <input 
+            type="password" 
+            value=" " 
+            style="position: absolute;z-index: -1;" 
+            disabled 
+            autocomplete = "off"/>
+          <p><input 
+            type="text" 
+            maxlength="20" 
+            placeholder="用户名" 
+            id="name" 
+            name="name" 
+            autocomplete = "off"/></p>
+          <p><input 
+            type="password" 
+            maxlength="20" 
+            placeholder="密码" 
+            id="pwd" 
+            name="pwd" 
+            autocomplete = "off"/></p>
+          <p><input 
+            type="text" 
+            maxlength="4" 
+            placeholder="验证码" 
+            id="vcode" 
+            name="vcode" 
+            autocomplete = "off"/></p>
+          <p><input 
+            type="button" 
+            value="登录" 
+            id="login"/></p>
+          <p style="visibility: hidden;"><input 
+            type="password" 
+            value=" " 
+            style="position: absolute;z-index: -1;" 
+            disabled 
+            autocomplete = "off"/></p><!-- 这个password的值会被浏览器记住，我随便用个空格 -->          
+      </form>
+    </div>
+    <div class="error">
+      <div>
+       <p> 前端可能出现的错误:</p>
+       <ul>
+         <li>JS运行出错:InternalError, RangeError, EvalError, ReferenceError, SyntaxError, TypeError, URIError</li>
+         <li>DOM API调用出错: DOMException</li>
+         <li>Promise产生异常</li>
+         <li>接口或者文档、脚本加载异常: Script Error</li>
+       </ul>
+       <p>框架对错误的处理：</p>
+       <ul>
+         <li>
+            Vue中提供了Vue.config.errorHandler`来处理捕获到的错误。Vue.config.errorHandler = function (err, vm, info) {}
+         </li>
+         <li>
+            Reactv16以后，使用componentDidCatch来处理捕获的错误。若需全局捕获错误，可以在最外层包裹一层组件，在componentDidCatch中捕获错误信息。
+         </li>
+       </ul>
+      </div>
+        在开发的过程中，对于容易出错的地方，可以使用try{}catch(){}来进行错误的捕获，做好兜底处理，避免页面挂掉。
+        而对于全局的错误捕获，在现代浏览器中，使用window.addEventListener('error')，window.addEventListener('unhandledrejection')就行了。
+        如果需要考虑兼容性，需要加上window.onerror，三者同时使用，window.addEventListener('error')专门用来捕获资源加载错误。
+    </div>
+    <script>
+      //generator
+      function* gen() {
+        let a = 12
+        new promise
+      }
+
+      let g = gen()
+      console.log(g.next())
+      console.log(g.next())
+      console.log(g.next())
+      console.log(g.next())
+
+      const nativeAddEventListener = EventTarget.prototype.addEventListener; // 先将原生方法保存起来。
+      EventTarget.prototype.addEventListener = function (type, func, options) { // 重写原生方法。
+          const wrappedFunc = function (...args) { // 将回调函数包裹一层try catch
+            try { 
+              return func.apply(this, args);
+            } catch (e) {
+              const errorObj = {
+                error_name: e.name || '',
+                error_msg: e.message || '',
+                error_stack: e.stack || (e.error && e.error.stack),
+                error_native: e,
+              };
+              // 接下来可以将errorObj统一进行处理。
+              console.log(e)
+            }
+          }
+          return nativeAddEventListener.call(this, type, wrappedFunc, options); // 调用原生的方法，保证addEventListener正确执行
+      }
+
+      //捕获错误后如何上报
+      function logError(error){
+        var img = new Image();
+        img.onload = img.onerror = function(){
+          img = null;
+        }
+        img.src = `${上报地址}?${processErrorParam(error)}`;
+      }
+
+      window.addEventListener('error', (e) => {
+        console.log(e)
+      })
+      //这个不会覆盖掉上面的监听器
+      window.addEventListener('error', (e) => {
+        console.log('hi')
+      })
+      window.onerror = function(e) {
+        console.log('hissss')
+      }
+      //这个会覆盖掉上面的onerror
+      window.onerror = function(e) {
+        console.log(e)
+      }
+
+      //捕获Promise报错
+      window.addEventListener('unhandledrejection', (e) => {
+        console.log('reject', e)
+      })
+
+      //try/catch不能捕获异步函数报错
+      try {
+        setTimeout(() => {
+          Promise.reject('promise-error')
+        }, 1000)
+      } catch(e) {
+        console.log('hh, got u')
+      }
+
+      //非异步操作可以捕获
+      try {
+        throw(new Error())
+      } catch(e) {
+        console.log('hh')
+      }
+      
+      let error = new Error('my-error')
+      throw(error)
+      
+    </script>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+      body {
+        background: cornsilk;
+      }
+      div {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="table"></div>
+    <div id="table1"></div>
+    <div id="table2"></div>
+    <div id="table3"></div>
+    <script type="module">
+      import {table_config, table_config1, table_config2, table_config3} from './test.js'
+      import Table from './main.js'
+      let table = new Table(table_config)
+      table.draw()
+      let table1 = new Table(table_config1)
+      table1.draw()
+      let table2 = new Table(table_config2)
+      table2.draw()
+      let table3 = new Table(table_config3)
+      table3.draw()
+    </script>
+  </body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+      h1 {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- <div class="top">
+          <h1>hello d3</h1>
+          <p>hello p</p>
+          <p class="child">hello child</p>
+      </div>
+      <div class="middle">
+        <h1>hello middle</h1>
+        <input type="text" class="value" value="jjj">
+        <input type="checkbox" class="checkbox" checked>
+      </div>
+      <div class="bottom">
+        <h1>hhhh</h1>
+        <div class="left"></div>
+        <div class="right"></div>
+        <ul id="list">
+          <li data-username="shawnbot">Shawn Allen</li>
+          <li data-username="mbostock">Mike Bostock</li>
+        </ul>
+      </div> -->
+    </div>
+    <script>
+      
+
+      let width = 500
+
+      let svg = d3.select('.container').append('svg')
+      .attr("width", width)
+      .attr("height", 33)
+      .attr("viewBox", `0 -20 ${width} 33`);
+
+      function randomLetters() {
+        return d3.shuffle("abcdefghijklmnopqrstuvwxyz".split(""))
+          .slice(0, Math.floor(6 + Math.random() * 20))
+          .sort();
+      }
+      setInterval(() => {
+        const t = svg.transition()
+        .duration(750);
+
+        svg.selectAll("text")
+          .data(randomLetters(), d => d)
+          .join(
+            enter => enter.append("text")
+                .attr("fill", "green")
+                .attr("x", (d, i) => i * 16)
+                .attr("y", -30)
+                .text(d => d)
+              //To avoid breaking the method chain, use selection.call to create transitions
+              .call(enter => enter.transition(t).attr("y", 0)),
+            update => update
+                .attr("fill", "black")
+                .attr("y", 0)
+              .call(update => update.transition(t).attr("x", (d, i) => i * 16)),
+            exit => exit
+                .attr("fill", "brown")
+              .call(exit => exit.transition(t).attr("y", 30).remove())
+          );
+
+        //   .join(
+        //     enter => enter.append("text")
+        //         .attr("fill", "green")
+        //         .text(d => d),
+        //     update => update
+        //         .attr("fill", "gray")
+        //   )
+        //     .attr("x", (d, i) => i * 16);
+        // }, 2000)
+
+
+//       d3.selectAll('li').each(function() {
+//         console.log(d3.style(this, 'color'), this.dataset, this.dataset.username)
+//       })
+//       let l = console.log
+//       let tops = d3.select('.top')
+//       let topss = d3.select('top2')
+//       l(tops, topss, tops instanceof d3.selection)
+//       l(d3.select(this))
+//       l(d3.selectAll(document.body))
+//       let h11 = d3.selectAll('h1')
+//       l(h11)
+//       l(tops.selectAll('p'))
+//       l(tops.select('p'))
+//       let child = d3.selectAll('p').filter('.child')
+//       l(child)
+//       let middle = d3.select('.middle')
+//       let merge = middle.merge(tops)
+//       l(merge)
+//       l(d3.matcher('div'))
+//       //l(d3.window(tops))
+//       //d3.style(node, name)
+//       tops.attr('style', 'color: green')
+//       h11.classed('foo', true)
+//       middle.select('.value').property('value', 'll')
+//       middle.insert('div', ':nth-child(3)')
+//       console.log(h11.nodes())
+//       const matrix = [
+//   [11975,  5871, 8916, 2868],
+//   [ 1951, 10048, 2060, 6171],
+//   [ 8010, 16145, 8090, 8045],
+//   [ 1013,   990,  940, 6907]
+// ];
+
+// d3.select("body")
+//   .append("table")
+//   .selectAll("tr")
+//   .data(matrix)
+//   .join("tr")
+//   .selectAll("td")
+//   .data(d => d)
+//   .join("td")
+//     .text(d => d);
+
+    </script>
+  </body> 
+</html>

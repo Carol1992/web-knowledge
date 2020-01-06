@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+      .container {
+        width: 400px;
+        height: 600px;
+        padding: 20px;
+        box-sizing: border-box;
+        border-radius: 5px;
+        border: 1px solid orange;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="container">
+      <base-card :user_info="user_info">
+        <template v-slot:default>
+            <span>成绩列表</span>
+            <ul>
+              <li v-for="(grade, index) in grades">{{grade.course}}: {{grade.grade}}</li>
+            </ul>
+        </template>
+        <template #courses>
+          <ul>
+            <li v-for="(key, index) in courseStat">{{key}}: {{courses[key]}}</li>
+          </ul>
+        </template>
+        <template #feature>
+          hi, {{feature}}
+        </template>
+      </base-card>
+      
+      <todo-list :todos="todos">
+        <template v-slot:todo="{ todo }">
+          {{ todo.text }}
+          <span v-if="todo.isComplete"> ✓</span>
+        </template>
+      </todo-list>
+    </div>
+    <script>
+      let TodoList = {
+        props: {
+          todos: {
+            type: Array,
+            default: function() {
+              return []
+            }
+          }
+        },
+        template: `
+          <ul>
+            <li
+              v-for="todo in todos"
+              v-bind:key="todo.id"
+            >
+              <slot name="todo" v-bind:todo="todo">
+                {{ todo.text }}
+              </slot>
+            </li>
+          </ul>
+        `
+      }
+      let BaseCard = {
+        inheritAttrs: true,
+        props: {
+          user_info: {
+            type: Object,
+            default: function() {
+              return {}
+            }
+          }
+        },
+        template: 
+          `<div class="base-card">
+            <div class="name">姓名：{{user_info.user_name}}</div>
+            <div class="gender">性别：{{user_info.user_gender}}</div>
+            <slot>未知</slot>
+            <slot name="courses">未知</slot>
+            <slot name="feature"></slot>
+          </div>`,
+        methods: {
+          
+        }
+      }
+
+      let vm = new Vue({
+        el: "#container",
+        data() {
+          return {
+            user_info: {
+              user_name: "carol",
+              user_gender: "female"
+            },
+            grades: [
+              { course: 'Chinese', grade: 90 },
+              { course: 'Math', grade: 100 },
+              { course: 'Science', grade: 90 },
+              { course: 'English', grade: 80 },
+            ],
+            courses: {
+              averageGrade: 90,
+              counts: 4,
+              best: "Math",
+              worst: "English"
+            },
+            feature: 'I love Internet!!!',
+            todos:[
+              { text: "go to school", isComplete: false },
+              { text: "tell my mom im gay", isComplete: false },
+              { text: "update my schedules", isComplete: true },
+            ]
+          }
+        },
+        components: {
+          "base-card": BaseCard,
+          "todo-list": TodoList
+        },
+        computed:{
+          courseStat() {
+            return Object.keys(this.courses)
+          }
+        },
+        methods: {
+         
+        }
+      })
+
+    </script>
+
+  </body>
+</html>

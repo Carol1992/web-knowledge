@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+      .big {
+        height: 2000px;
+      }
+      .cover {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1);
+        z-index: 2;
+        top:0;
+        left: 0;
+      }
+      .content {
+        width: 300px;
+        height: 400px;
+        position: fixed;
+        top: 200px;
+        left: 300px;
+        z-index: 3;
+        background: #fff;
+        overflow: auto;
+      }
+      .bbb {
+        height: 500px;
+        background: red;
+        width: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="container">
+      <div class="big"></div>
+      <div class="cover"></div>
+      <div class="content">
+        <div class="bbb"></div>
+      </div>
+      <span :class="{a: isA, b: isB}">{{msg}}</span>
+      <span :class="[firstName, lastName]"></span>
+      <span :class="isA ? 'b' : 'a'"></span>
+      <span :style="{color: 'red', fontSize: '12px'}">kk</span>
+      <my-item :msg='msg'>
+        <div class="slot">slottttt</div>
+      </my-item>
+      <!-- 可以用方括号括起来的 JavaScript 表达式作为一个指令的参数. 需要避免使用大写字符来命名键名，因为浏览器会把 attribute 名全部强制转为小写： -->
+      <span :[attrname]="msg">ss</span>
+      <my-input v-bind="input" @change="change" v-focus v-highlight v-direction:[direction]="padding" v-color></my-input>
+      {{count}}
+      {{name}}
+    </div>
+    <script>
+      /** 高阶组件(这是React代码复用的方式，在Vue中一般使用mixins) **/ 
+
+      /** 组件 **/
+      //内置components: slot, component, keep-alive, transition
+      //全局注册，可用在之后任何新创建的Vue实例中
+      Vue.component('my-btn', {
+        props: ['name', "prop"],
+        template: `
+          <div @click="clickme" :style='{fontSize: "20px", background: "red", width: "40px", cursor: "pointer" }'>
+              <span>{{name}}{{prop}}</span>
+          </div>
+        `,
+        methods: {
+          clickme: function() {
+            this.$emit('clickme', 10)
+          }
+        },
+        mounted() {
+          console.log(this.prop)
+        }
+      })
+      Vue.component('my-item', {
+        props: ['msg'],
+        template: `<div>
+            <span>{{msg | capital}}</span>
+            <my-btn :name="hi" @clickme="handle"></my-btn>
+            <slot></slot>
+          </div>`,
+        //一个组件的 data 选项必须是一个函数，因此每个实例可以维护一份被返回对象的独立的拷贝
+        data: function() {
+          return {
+            hi: 'hi'
+          }
+        },
+        methods: {
+          handle: function(val) {
+            console.log(val)
+          }
+        }
+      })
+      //局部注册
+      let myInput = {
+        props: ['value', 'name'],
+        template: `
+          <input :name="name" :value="value" @input="handle" />
+        `,
+        methods: {
+          handle: function(e) {
+            console.log(e)
+            this.$emit("change", e.target.value)
+          }
+        }
+      }
+      /** 指令 **/
+      //内置指令：v-if, v-else, v-else-if, v-show, v-model, v-hltm, v-text, v-cloak, v-once, v-for, v-on, v-bind, v-slot, v-pre
+      //全局注册
+      Vue.directive("highlight", {
+        bind(el, binding, vnode) {
+          
+        },
+        inserted(el, binding, vnode) {
+          el.style.outline = "none"
+          el.style.border = "1px solid red"
+        },
+        update(el, binding, vnode, oldVnode) {
+
+        },
+        componentUpdated(el, binding, vnode, oldVnode) {
+
+        },
+        unbind(el, binding, vnode) {
+
+        }
+      })
+
+      //局部注册
+      let inputFocus = {
+        inserted(el, binding, vnode) {
+          el.focus()
+        },
+      }
+      let direction = {
+        inserted(el, binding, vnode) {
+          console.log(el, binding, vnode)
+          el.style.position = "fixed"
+          el.style[binding.arg] = binding.value + 'px'
+        },
+      }
+      /** 混入 **/ 
+      /** 
+       * 合并策略：
+       * 钩子函数：合并为数组，混入的钩子函数先调用
+       * data, components, methods, directives等为对象的选项：合并为一个对象，键名冲突时以组件的为主
+       * Vue.mixin和Vue.extend的区别：前者是对Vue构造函数的全局混入，会影响到所有使用Vue生成的实例；后者是生成一个Vue的子类，也是构造函数，只会影响到该子类生成的实例
+       **/
+      //全局混入
+      Vue.mixin({
+        mounted() {
+          console.log("mixin from Vue")
+        }
+      })
+      //局部混入
+      let mixin_1 = {
+        mounted() {
+          console.log("mixin from mixin 1")
+        }
+      }
+      let mixin_2 = {
+        mounted() {
+          console.log("mixin from mixin 2")
+        }
+      }
+      /** 插件 **/
+      //添加全局方法或属性
+      //添加全局资源：指令、过滤器、过渡等
+      //通过全局混入来添加一些组件选项：vue-router, vue-i18n, vuex
+      //添加Vue实例方法，通过把他们添加到Vue.prototype上面实现
+      let Toast = {}
+      Toast.install = function(Vue, options) {
+        //静态方法
+        Vue.toast = function() {
+          console.log("hi")
+        }
+        //实例方法
+        Vue.prototype.$toast = function(options) {
+          console.log("hello")
+        }
+        //混入
+        Vue.mixin({
+          data: function() {
+            return {
+              fromVue: "good", 
+              direction: "right"
+            }
+          },
+          mounted() {
+            console.log("mixin from Plugin")
+          }
+        })
+        //资源
+        Vue.directive("color", {
+          inserted(el, binding, vnode) {
+            el.style.backgroundColor = "yellow"
+            el.style.color = "blue"
+          },
+        })
+      }
+
+      Vue.use(Toast)
+
+      let store = Vue.observable({
+        count: 12,
+        name: 'carol'
+      })
+      store.name = "kkksksjsjsj"
+      console.log(store)
+
+      //当全局过滤器和局部过滤器重名时，会采用局部过滤器
+      //过滤器可以串联：{{ message | filterA | filterB }}
+      //过滤器是函数，因此可以接受参数：{{ message | filterA('arg1', arg2) }}
+      Vue.filter('capital', function(value) {
+        value = value.toString()
+        return value.charAt(0).toUpperCase() + value.slice(1)
+      })
+      let app = new Vue({
+        el: '#container',
+        propsData: {
+          prop: 12,
+        },
+        filters: {
+
+        },
+        data: {
+          msg: 'hello world',
+          attrname: 'hello',
+          firstName: 'carol',
+          lastName: 'lin',
+          isA: true,
+          isB: true,
+          input: {
+            name: 'hello',
+            value: 'ksksks'
+          },
+          direction: 'top',
+          padding: 200
+        },
+        components: {
+          'my-input': myInput
+        },
+        directives: {
+          focus: inputFocus,
+          direction
+        },
+        mixins: [mixin_1, mixin_2],
+        beforeCreate: function() {
+
+        },
+        created: function() {
+
+        },
+        beforeUpdate: function() {
+
+        },
+        updated: function() {
+
+        },
+        beforeMount: function() {
+
+        },
+        mounted: function() {
+          Vue.toast()
+          this.$toast()
+        },
+        beforeDestroy: function() {
+
+        },
+        destroyed: function() {
+
+        },
+        computed: {
+          fullName: {
+            // getter
+            get: function () {
+              return this.firstName + ' ' + this.lastName
+            },
+            // setter
+            set: function (newValue) {
+              var names = newValue.split(' ')
+              this.firstName = names[0]
+              this.lastName = names[names.length - 1]
+            }
+          },
+          count() {
+            return store.count
+          },
+          name() {
+            return store.name
+          }
+        },
+        watch: {
+
+        },
+        methods: {
+          change(val) {
+            console.log("hello " + val)
+          }
+        }
+      })
+
+      console.log(app.$el === document.getElementById('container'))
+    </script>
+  </body>
+</html>

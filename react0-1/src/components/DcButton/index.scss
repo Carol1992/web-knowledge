@@ -1,0 +1,13 @@
+.dc-button {
+	width: 400px;
+	height: 40px;
+	border-radius: 20px;
+	text-align: center;
+	color: #fff;
+	background-image: linear-gradient(to left, #42C4F5, #4284F5);
+	cursor: pointer;
+	display: inline-block;
+	span {
+		line-height: 40px;
+	}
+}

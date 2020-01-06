@@ -1,0 +1,10 @@
+ warn --- config file  - /Users/linqing/.config/verdaccio/config.yaml
+ warn --- Verdaccio started
+ warn --- Plugin successfully loaded: verdaccio-htpasswd
+ warn --- Plugin successfully loaded: verdaccio-audit
+ warn --- http address - http://192.168.1.31:4873/ - verdaccio/4.4.0
+ warn --- config file  - /Users/linqing/.config/verdaccio/config.yaml
+ warn --- Verdaccio started
+ warn --- Plugin successfully loaded: verdaccio-htpasswd
+ warn --- Plugin successfully loaded: verdaccio-audit
+ warn --- http address - http://localhost:4873/ - verdaccio/4.4.0

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>web worker</title>
+    <meta charset="utf-8">
+    <style>
+      .worker {
+        width: 500px;
+      }
+      span {
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="worker">
+      <button id="add-new">添加随机字符串</button>
+      <div id="list">
+
+      </div>
+      <button id="blocked">阻塞页面</button>
+      <div id="worker">
+
+      </div>
+      <button id="start-worker">开启JS子线程</button>
+      <button id="stop-worker">关掉JS子线程</button>
+    </div>
+    <script>
+      //参考: http://www.ruanyifeng.com/blog/2018/07/web-worker.html
+      //可以通过option给新建的子线程命名: new Worker('worker.js', { name : 'myWorker' });
+      let addNew = document.getElementById('add-new')
+      let blocked = document.getElementById('blocked')
+      let list = document.getElementById('list')
+      let strings = []
+      addNew.addEventListener('click', (e) => {
+        let str = Math.random().toString(16).slice(2)
+        strings.push(str)
+        let temp = ''
+        strings.forEach(s => {
+          temp += `<span>${s}</span>&nbsp&nbsp&nbsp&nbsp&nbsp`
+        })
+        list.innerHTML = temp
+      })
+      
+      if(window.Worker) {
+        let worker_info = document.getElementById('worker')
+        let start = document.getElementById('start-worker')
+        let stop = document.getElementById('stop-worker')
+        let info_list = []
+        let myWorker = null
+        blocked.addEventListener('click', (e) => {
+          let times = 900000
+          let num = 4
+          let loops = 1000
+          if(myWorker) {
+            myWorker.postMessage({
+              times,
+              num,
+              loops
+            })
+            //worker 会先将上面的执行完，在执行接下来的
+            // myWorker.postMessage({
+            //   times: 10000,
+            //   num: 4,
+            //   loops: 1000
+            // })
+          } else {
+            let arr = []
+            let i = times
+            while(--i >= 0) {
+              arr.push({
+                key: i,
+                values: i / 2
+              })
+            }
+            let time = new Date().getTime()
+            for(let i=0; i<loops; i++) {
+              arr.filter(item => item.key === num)
+            }
+            info_list.push(`对${times}条数据进行${loops}次filter操作所需时间: ${new Date().getTime() - time}`)
+            worker_info.innerHTML = info_list.join('&nbsp&nbsp&nbsp&nbsp&nbsp')
+          }
+        })
+        start.addEventListener('click', (e) => {
+          myWorker = new Worker("worker.js");
+          myWorker.onmessage = function(e) { 
+            let {times, loops, time} = e.data
+            info_list.push(`对${times}条数据进行${loops}次filter操作所需时间: ${time}`)
+            worker_info.innerHTML = info_list.join('&nbsp&nbsp&nbsp&nbsp&nbsp')
+          }
+          myWorker.onerror = function(e) {
+            console.log([
+              'ERROR: Line ', e.lineno, ' in ', e.filename, ': ', e.message
+            ].join(''));
+          }
+        })
+        stop.addEventListener('click', (e) => {
+          if(myWorker) {
+            myWorker.terminate();
+            myWorker = null
+          }
+        })
+      }
+    </script>
+  </body>
+</html>

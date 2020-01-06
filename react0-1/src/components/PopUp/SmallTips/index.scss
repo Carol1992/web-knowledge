@@ -1,0 +1,21 @@
+.small-tips {
+	min-width: 300px;
+	height: 40px;
+	background: #424242;
+	border-radius: 4px;
+	color: #fff;
+	font-size: 12px;
+	line-height: 40px;
+	display: flex;
+	padding: 0px 10px;
+	justify-content: space-between;
+	position: absolute;
+	z-index: 10;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	.noticed {
+		text-decoration: underline;
+		cursor: pointer;
+	}
+}

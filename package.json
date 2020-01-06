@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "vue-worker": "^1.2.1"
+  }
+}

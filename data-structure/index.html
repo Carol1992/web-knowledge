@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    
+  </head>
+  <body>
+    <div class="data">
+      <div class="vdom">
+        <p>虚拟DOM: 以对象的形式模拟树形结构</p>
+        <p>diff算法: 逐级比较两个虚拟节点，如果这两个节点所描述的元素完全不同，则不再比较其子节点，直接移除旧节点，增加新节点；
+          否则比较其子节点，决定是删除和添加，还是继续对下一层的节点进行比较。经过这种递归比较操作，可以实现整个虚拟DOM的更新。</p>
+      </div>
+    </div>
+    <script>
+      let object = {}
+      object['key'] = 12 //O(1)
+      object['key'] //O(1)
+      object.keys //O(N)
+      object.values //O(N)
+      delete object['key'] //O(1)
+
+      let array = [1, 2]
+      // 以下都是 O(1)
+      array.push(3)
+      array.pop()
+      // 以下都是 O(N)
+      array.shift()
+      array.unshift()
+      array.slice()
+      array.splice()
+      array.concat()
+      array.forEach()
+      array.map()
+      array.filter()
+      array.reduce()
+      // 以下是O(N * logN)
+      array.sort()
+    </script>
+  </body>
+</html>

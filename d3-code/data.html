@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+  <script>
+    d3.text('./data/test.txt').then(function(data) {
+      console.log('text:----', data)
+    })
+    d3.csv('./data/test.csv').then(function(data) {
+      console.log('csv:----', data)
+    })
+    d3.blob('./data/test.jpg').then(function(data) {
+      console.log('blob:----', data)
+    })
+    d3.buffer('./data/test.jpg').then(function(data) {
+      console.log('buffer:----', data)
+    })
+    d3.dsv(',', './data/test.csv', function(d) {
+      return d
+    }).then(function(data) {
+      console.log('dsv:----', data)
+    })
+    d3.html('./data/test.html', function(data) {
+      console.log('html:----', data)
+    })
+    d3.image("https://cdn.glitch.com/4c9ebeb9-8b9a-4adc-ad0a-238d9ae00bb5%2Fmdn_logo-only_color.svg?1535749917189", {crossOrigin: "anonymous"}).then(function(data) {
+      console.log('image:----', data)
+    })
+    d3.json('./data/test.json').then(function(data) {
+      console.log('json:----', data)
+    })
+    d3.svg('./data/test.svg').then(function(data) {
+      console.log('svg:----', data)
+    })
+    d3.xml('./data/test.xml').then(function(data) {
+      console.log('xml:----', data)
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>css-flex</title>
+    <meta charset="utf-8">
+    <style>
+      input {
+        display: block;
+        border: 1px solid royalblue;
+        border-radius: 5px;
+        height: 30px;
+        width: 300px;
+        box-sizing: border-box;
+        outline: none;
+        margin: 10px;
+      }
+      #image {
+        width: 50px;
+        height: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="input">
+      <input type="button" value="button" name="button" id="button">
+      <input type="checkbox" name="checkbox" id="checkbox">
+      <input type="color" name="color" id="color">
+      <input type="date" name="date" id="date">
+      <input type="datetime" name="datetime" id="datetime">
+      <input type="datetime-local" name="datetime-local" id="datetime-local">
+      <input type="email" name="email" id="email">
+      <input type="image" src="./cat.jpg" alt="image" id="image">
+      <input type="month" name="month" id="month">
+      <input type="number" name="number" id="number">
+      <input type="password" name="password" id="password">
+      <input type="file" name="file" id="file">
+      <input type="hidden" name="hidden" id="hidden">
+      <input type="radio" name="radio" id="radio">
+      <input type="range" name="range" id="range">
+      <input type="reset" value="reset" id="reset">
+      <input type="search" name="search" id="search">
+      <input type="submit" value="submit" id="submit">
+      <input type="tel" name="tel" id="tel">
+      <input type="text" name="text" id="text">
+      <input type="time" name="time" id="time">
+      <input type="url" name="url" id="url">
+      <input type="week" name="week" id="week">
+    </div>
+    <script>
+      let ids = ["button", "checkbox", "color", "date", "datetime", "datetime-local", 
+      "email", "image", "month", "number", "password", "file", "hidden", "radio", 
+      "range", "reset", "search", "submit", "tel", "text", "time", "url", "week"];
+      ids.forEach(id => {
+        let elt = document.getElementById(id);
+        elt.addEventListener('change', (e) => {
+          console.log(e.target.value)
+        })
+      })
+    </script>
+  </body>
+</html>

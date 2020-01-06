@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+      .container {
+        width: 400px;
+        height: 200px;
+        padding: 20px;
+        box-sizing: border-box;
+        border-radius: 5px;
+        border: 1px solid orange;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="container">
+      <transition>
+        <base-card ref="card" :user_info="user_info" v-bind="user_input" @test="test" @input="input" @change="change"></base-card>
+      </transition>
+    </div>
+    <script>
+      let BaseFocus = {
+        inserted(el, binding) {
+          el.focus = binding.value
+        }
+      };
+
+      let BaseInput = {
+        props: {
+          type: {
+            type: String,
+            default: 'text'
+          },
+          name: {
+            type: String,
+            default: 'text'
+          },
+          focus: {
+            type: Boolean,
+            default: false
+          },
+          styles: {
+            type: Object,
+            default: function() {
+              return {}
+            }
+          }
+        },
+        directives: {
+          focus: BaseFocus
+        },
+        template: `<input :type="type" :name="name" @input="input" @change="change" v-focus="focus" :style="styles" />`,
+        methods: {
+          input(e) {
+            this.$emit("input", e.target.value)
+          },
+          change(e) {
+            this.$emit("change", e.target.value)
+          }
+        }
+      };
+
+      let BaseCard = {
+        inheritAttrs: true,
+        props: {
+          user_info: {
+            type: Object,
+            default: function() {
+              return {}
+            }
+          }
+        },
+        components: {
+          "base-input": BaseInput
+        },
+        template: 
+          `<div class="base-card">
+            <div class="name">姓名：{{user_info.user_name}}</div>
+            <div class="gender">性别：{{user_info.user_gender}}</div>
+            <div class="test" @click="test">测试：Click me!!</div>
+            <div class="remark">
+              密码：<base-input v-bind="$attrs" v-on="$listeners"></base-input>
+            </div>
+          </div>`,
+        methods: {
+          test() {
+            this.$emit("test")
+          }
+        }
+      }
+
+      let vm = new Vue({
+        el: "#container",
+        data() {
+          return {
+            user_info: {
+              user_name: "carol",
+              user_gender: "female"
+            },
+            user_input: {
+              type: 'password',
+              name: 'passowrd',
+              focus: true
+            }
+          }
+        },
+        components: {
+          "base-card": BaseCard
+        },
+        methods: {
+          test() {
+            console.log("attrs: ", this.$refs.card.$attrs)
+            console.log("listernes: ", this.$refs.card.$listeners)
+            console.log("you just click the test div!!!")
+          },
+          input(val) {
+            console.log("your input: ", val)
+          },
+          change(val) {
+            console.log("you change the input and blur: ", val)
+          }
+        }
+      })
+
+    </script>
+    <script async src="//jsfiddle.net/carol1992/dfsrnLk5/1/embed/"></script>
+  </body>
+</html>

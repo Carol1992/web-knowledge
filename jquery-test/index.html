@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>jquery-test</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <!-- <link rel="icon" href="favicon.ico"> -->
+  <script src="jquery-3.4.1.js"></script>
+  <style>
+    .container {
+      width: 100px;
+      height: 100px;
+      border-radius: 4px;
+      border: 1px solid #000;
+    }
+    .red {
+      border-color: red;
+    }
+    .green {
+      border-color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" data-test="test">
+    <p class="text">hello world</p>
+    <form method="post">
+      <input type="checkbox" name="checkbox" id="checkbox">
+      <input type="datetime" name="datetime" id="datetime">
+      <input type="hidden" name="hidden" value="sss">
+    </form>
+    <table>
+      <tr class="first">hkjhdjh</tr>
+      <tr>sdas</tr>
+      <tr class="two">daS</tr>
+      <tr>DQW3W</tr>
+      <tr class="last">QWEQ</tr>
+    </table>
+  </div>
+
+  <script>
+    //避免全局变量名冲突的方法
+    /*
+      1. let jq = $.noConflict()
+      2. 将代码用立即执行函数包裹起来，然后将jQuery作为参数传入函数内部
+      3. jQuery 在DOM执行完成后执行一个回调函数，jQuery(document).ready(function( $ ) {});
+    */
+    //let jq = $.noConflict()
+    $(function() {
+      console.log("DOM 准备好了")
+
+      $(".container").click(function(e) {
+        console.log(e, this)
+        $(this).addClass('red')
+        $('.text').show('slow')
+
+        e.preventDefault();
+      })
+
+      $(".container").dblclick(function(e) {
+        $(this).removeClass('red')
+        $(this).addClass('green')
+        $('.text').hide('slow')
+
+        e.preventDefault();
+      })
+
+      $.get('test.json', function(data, status, instance) {
+        console.log(data)
+        console.log(status)
+        console.log(instance)
+      })
+
+      //jquery 选择器上的方法 $('.class').each()
+      //jQuery 自带的方法 $.each()
+
+      let attr = $('.container').attr("data-test")
+      $('.container').attr({
+        "data-set": 'test',
+        href: 'kkkk',
+        name: function(index, currentValue) {
+          return 'kk'
+        }
+      })
+
+      //:password, :checkbox, :hidden, :text, :submit, :button, :reset, :radio, :image, :file
+      let checkbox = $('form input:lt(1)') //$('form input:checkbox') //$('input[type="checkbox"]') //$('form #checkbox') //$('input[name="checkbox"]')
+      let datetime = $('input[name="datetime"]')
+      let input = $('#checkbox, #datetime') //$('form input')
+      let hidden = $('form input:hidden')
+      console.log(checkbox, datetime, input, hidden)
+
+      //链式调用
+      let list = $('table').find('tr.first'); //$('table tr.first')//$('table tr:first') //.filter('.first')  //.first()  //.eq(0)
+      console.log(list)
+      //.end() method to get back to the original selection
+
+      //getter 和 setter: .html() .text() .attr() .width() .height() .val() .position()
+      //在DOM中移动元素：将选中的元素相对某一个元素移动；将某一个元素相对选中的元素移动
+
+
+      //创建新元素
+      let link = $("<a/>", {
+        html: `this is a link`,
+        "class": "link",
+        href: ''
+      })
+      console.log(link)
+      $('.container').append(link)
+      //cost: 先将内容拼接成HTML，然后再插入到DOM
+
+      //删除元素：remove和detach两者都会删除并返回删除的元素
+      /*
+        .remove() 删除元素的同时也删除其关联的数据和事件，如果再插回到DOM，需要重新绑定数据和事件
+        .detach() 不会删除其关联的数据和事件，直接插回DOM不需要重新绑定数据和事件
+        .empty() 删除元素内容
+      */
+
+      //复制元素：.clone()
+
+      //插入元素：.insertAfter() .insertBefore() .appendTo() .prependTo() .after() .before() .append() .prepend()
+
+      //jquery 对象
+      /*
+        jquery 选择器返回一个jQuery对象，是一个类数组，可通过 .get() 或者数组下标来获取原生DOM元素
+        .eq(0) 返回第一个元素的jQuery选择器，.get(0)返回第一个元素的元素DOM
+        jQuery选择器也是不能监控到页面元素变化的，如果刚开始选择了5个DOM元素，通过操作DOM往页面中插入2个DOM元素，需要重新获取
+        jQuery选择器不能比较，元素DOM元素可以比较
+      */
+      // Creating two jQuery objects for the same element.
+      var logo1 = $( "#logo" );
+      var logo2 = $( "#logo" );
+    
+      console.log( $( "#logo" ) === $( "#logo" ) ); // alerts "false"
+
+      var logo1Elem = logo1.get( 0 );
+      var logo2Elem = logo2.get( 0 );
+      
+      console.log( logo1Elem === logo2Elem ); // alerts "true"
+    })
+
+    //遍历
+    /*
+      .parent()
+      .parents()
+      .parents(选择器)
+      .parentsUntil(选择器)
+      .closest(选择器)  Selecting the closest parent
+      .children()
+      .find()
+      .next()
+      .prev()
+      .nextAll()
+      .prevAll()
+      .siblings()
+    */
+
+    //样式: 尽量少使用.css()，应该使用class: addClass, removeClass, toggleClass
+    $('.text').css("color", "red")
+    console.log($('.text').css('color'))
+    $('.text').css({
+      fontSize: '20px',
+      textDecoration: 'underline'
+    })
+
+    $('.container').width('200px')
+
+    //数据存储： https://learn.jquery.com/using-jquery-core/data-methods/
+
+    //jquery全局方法
+    /*
+      $.map (.map())
+      $.trim()
+      $.each()  Iterates over arrays and objects  (.each())
+      $.inArray()
+      $.extend() If you don't want to change any of the objects you pass to $.extend(), pass an empty object as the first argument
+      $.proxy()
+      $.isArray([]); // true
+      $.isFunction(function() {}); // true
+      $.isNumeric(3.14); // true
+      $.type( true ); // "boolean"
+      $.type( 3 ); // "number"
+      $.type( "test" ); // "string"
+      $.type( function() {} ); // "function"
+      $.type( new Boolean() ); // "boolean"
+      $.type( new Number(3) ); // "number"
+      $.type( new String('test') ); // "string"
+      $.type( new Function() ); // "function"
+      $.type( [] ); // "array"
+      $.type( null ); // "null"
+      $.type( /test/ ); // "regexp"
+      $.type( new Date() ); // "date"
+    */
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>progressive web app</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico">
+    
+  </head>
+  <body>
+    <div class="tech">
+      <p>service worker</p>
+      <p>推送、通知</p>
+      <p>添加到桌面</p>
+      <p>响应式、自适应</p>
+    </div>
+    <div class="intro">
+      <p>只能使用HTTPS以及localhost</p>
+      <p>绕过苹果Applestore的审核，苹果service worker无法永久保存；苹果上的pwa每次打开都需要重新登录</p>
+      <p>国内使用谷歌浏览器的话无法使用推送功能，需要自由上网</p>
+    </div>
+    <script>
+      //注册一个service worker
+      window.addEventListener('load', function() {
+        const sw = window.navigator.serviceWorker
+        const killSW = window.killSW || false
+        if (!sw) {
+          return
+        }
+        if (!!killSW) {
+          sw.getRegistration('/serviceWorker').then(registration => {
+            // 手动注销
+            registration.unregister();
+            // 清除缓存
+            window.caches && caches.keys && caches.keys().then(function(keys) {
+              keys.forEach(function(key) {
+                caches.delete(key);
+              });
+            });
+          })
+        } else {
+          // 表示该 sw 监听的是根域名下的请求
+          sw.register('/serviceWorker.js',{scope: '/'}).then(registration => {
+            // 注册成功后会进入回调
+            console.log('Registered events at scope: ', registration.scope);
+          }).catch(err => {
+            console.error(err)
+          })
+        }
+      });
+      //给用户通知
+      Notification.requestPermission().then(result => {
+        if(result === 'granted') {
+          //send notification
+          let noti = new Notification('hello', {})
+        }
+      })
+      //创建缓存列表cacheList
+
+    </script>
+  </body>
+</html>

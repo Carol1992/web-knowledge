@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+      body {
+        /* background: cornsilk; */
+      }
+      #container {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+
+    </div>
+    <script type="module">
+      import {configs} from './test.js'
+      import Table from './main.js'
+      configs.forEach((c, i) => {
+        //if(i < 16) return
+        //console.log(c)
+        c.size = undefined
+        let id = c.bindto.slice(1)
+        let new_div = document.createElement('div')
+        new_div.id = id
+        new_div.style.cssText = "margin: 10px;"
+        document.getElementById("container").appendChild(new_div)
+        let table = new Table(c)
+        table.draw()
+      })
+     
+    </script>
+  </body>
+</html>

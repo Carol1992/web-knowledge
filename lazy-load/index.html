@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>lazy-load</title>
+    <meta charset="utf-8">
+    <style>
+      img {
+        width: 200px;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="lazy-load">
+        <img src="http://placehold.it/200x200/e1e1e1" data-src="./cat.jpg">
+    </div>
+    <script>
+      let img = [...document.getElementsByTagName('img')]
+      img.forEach(i => {
+        let offsetTop = i.offsetTop //获取元素相对于文档顶部的高度
+        i.style.filter = 'blur(2px)'
+        setTimeout(() => {
+          i.style.filter = 'blur(0)'
+          i.setAttribute('src', i.getAttribute('data-src'))
+        }, 1000)
+      })
+      //如果：offsetTop-scroolTop<clientHeight，则图片进入了可视区内，则被请求。
+      let root = document.documentElement
+      let scrollTop = root.scrollTop //滚动条滚动的距离
+      let clientHeight = root.clientHeight //获取屏幕可视区域的高度，只包括padding
+      
+      //如果：bound.top<=clientHeight，图片是在可视区域内的
+      let bound = el.getBoundingClientRect() //返回元素的大小及其相对于视口的位置
+
+      //Intersection Observer
+    </script>
+  </body>
+</html>

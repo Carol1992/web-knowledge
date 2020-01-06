@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    
+  </head>
+  <body>
+    路由动态加载component: () => import('@/components/Two')
+    生产环境剔除console和debugger代码
+    压缩图片image-webpack-loader
+    图片懒加载vue-lazyload
+    CDN publicPath
+    GZIP压缩
+    service worker 离线下载 必须架设https
+    tree shaking (剔除文件中多余的js, css代码)
+    externals (通过script标签引入，不参与打包)
+    devtool: "none" 你应该将你的服务器配置为，不允许普通用户访问 source map 文件！你不应将 source map 文件部署到 web 服务器。而是只将其用于错误报告工具。
+    source map 是一个存放位置信息的文件，跟经过打包压缩后的代码放在一起，转换后的代码对应的转换前的代码所在的位置就存放在map文件中。在前端监控中，需要使用到source map来查找发生错误的代码是在原始代码中的位置，这样方便调试。
+    如果我们只知道打包压缩后的文件某一行发生了错误，则几乎没有办法调试。
+
+    用压缩文件与 sourcemap 文件是可以原原本本的找到源代码的，所以，为了保护源代码，可以这样隐藏 sourcemap 文件：
+    1. 在 web 服务器设置外部不能访问 sourcemap 文件，只能内部访问
+    2. 直接把 sourcemap 文件存放到其他地方
+
+    压缩 js 的主要过程：
+    1. 移除无用代码
+    2. 混淆代码中变量名称、函数名称等
+    3. 预编译代码
+    4. 对结构进行扁平化处理
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+      console.log(`message: ${message}`);
+      console.log(`source: ${source}`);
+      console.log(`lineno: ${lineno}`);
+      console.log(`colno: ${colno}`);
+      console.log(`error: ${error}`);
+    }
+
+    // message: Uncaught TypeError: e.hello is not a function
+    // source: url/to/bundle.min.js
+    // lineno: 1
+    // colno: 982
+    // error: TypeError: e.hello is not a function
+
+    //===> 去find-error.js中查找发生错误的原始文件和位置
+    </script>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>linux mac command</title>
+    <meta charset="utf-8">
+    
+  </head>
+  <body>
+    <div class="command">
+      <div class="mac">
+        <div class="$PATH">
+          <p>MacOS 内置了多种 SHELL，可通过 cat /etc/shells 查看</p>
+          <p>查看环境变量： $PATH</p>
+          <P>Mac系统的环境变量，加载顺序为：
+            /etc/profile (系统启动时加载)
+            /etc/paths (系统启动时加载)
+            /etc/bashrc (系统启动时加载)
+            ~/.bash_profile (macos)
+            ~/.bash_login 
+            ~/.profile 
+            ~/.bashrc (linux)
+          </P>
+          <p>如何添加环境变量：一般不建议直接修改 /etc/paths 文件，而是将路径写在 /etc/paths.d/ 目录下的一个文件里，系统会逐一读取 /etc/paths.d/ 下的每个文件</p>
+          <p>如何使配置生效：source /etc/paths；重启终端</p>
+        </div>
+        <div class="cmd">
+          <p>查看文件权限：ls -l</p>
+          <p>查看所有文件：ls -a</p>
+          <p>更改文件权限：chmod (文件夹test; sudo chmod -R 777 test)</p>
+          <p>更改文件所有者：chown (文件夹test, 用户linqing; sudo chown -R linqing test)</p>
+        </div>
+      </div>
+      <div class="linux">
+        <div class="cmd">
+          <p>用netstat查看服务及监听端口</p>
+          [root@localhost ~]# netstat -nlp
+
+          netstat命令各个参数说明如下：
+
+          -t : 指明显示TCP端口
+
+          -u : 指明显示UDP端口
+
+          -l : 仅显示监听套接字(所谓套接字就是使应用程序能够读写与收发通讯协议(protocol)与资料的程序)
+
+          -p : 显示进程标识符和程序名称，每一个套接字/端口都属于一个程序
+
+          -n : 不进行DNS轮询(可以加速操作)
+
+          即可显示当前服务器上所有端口及进程服务，于grep结合可查看某个具体端口及服务情况··
+
+          [root@localhost ~]# netstat -nlp |grep LISTEN   //查看当前所有监听端口·
+          [root@localhost ~]# netstat -nlp |grep 80   //查看所有80端口使用情况·
+          [root@localhost ~]# netstat -an | grep 3306   //查看所有3306端口使用情况·
+
+          windows下：netstat -ano|findstr "8080"
+
+          mac下：lsof -i:3000
+        </div>
+        <ul>
+          <li>BIOS: 开机时执行的第一个程序，使用汇编语言写在硬件上的</li>
+          <li>/bin 命令</li>
+          <li>/boot 系统启动时使用的一些核心文件</li>
+          <li>/etc 存放所有系统管理所需要的配置文件和目录；旗下有passwd, shadow, group</li>
+          <li>/home 用户主目录</li>
+          <li>/lib 共享库</li>
+          <li>/root 系统管理员目录</li>
+          <li>/tmp 存放临时文件</li>
+          <li>/var 不断扩充，可存放日志文件</li>
+        </ul>
+        <ul>
+          <li>0: 移动到行的最前面</li>
+          <li>$: 移动到行的最后面</li>
+          <li>hjkl: 左下右上</li>
+          <li>pbcopy < filename :复制文件中的内容到剪切板</li>
+        </ul>
+      </div>
+    </div>
+    <script>
+      
+    </script>
+  </body>
+</html>

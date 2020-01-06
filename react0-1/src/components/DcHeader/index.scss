@@ -1,0 +1,79 @@
+$baseHeight: 60px;
+.dc-header {
+	padding-left: 40px;
+	width: calc(100% - 40px);
+	height: $baseHeight;
+	display: flex;
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	.line {
+		display: inline-block;
+		width: 1px;
+		height: 16px;
+		margin-left: 5px;
+		margin-right: 5px;
+		transform: translate(0px, 3px);
+	}
+	.logo {
+		span {
+			line-height: $baseHeight;
+		}
+		width: 80%;
+		.line {
+			background-color: #4284F5;
+			margin-right: 10px;
+			transform: translate(0px, 3px);
+		}
+		span {
+			font-size: 18px;
+			font-weight: bold;
+		}
+	}
+
+	.lang {
+		span {
+			line-height: $baseHeight;
+		}
+		width: 8%;
+		text-align: center;
+		.name {
+			cursor: pointer;
+		}
+		.name-selected {
+			cursor: pointer;
+			color: #4284F5;
+		}
+		.name-2 {
+			cursor: pointer;
+		}
+	}
+
+	.user {
+		position: relative;
+		>div {
+			>span {
+				line-height: $baseHeight;
+			}
+		}
+		width: 12%;
+		.dc-icon {
+			margin-right: 5px;
+		}
+	}
+
+	.PopUp {
+		position: absolute;
+		top: 45px;
+		z-index: 2;
+		left: -30px;
+	}
+	.Reset-Password {
+		position: fixed;
+		z-index: 3;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
