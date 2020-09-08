@@ -3,12 +3,41 @@
   <head>
     <title></title>
     <meta charset="utf-8">
-    
+    <style>
+      img {
+        width: 100%;
+      }
+      .jumbotron {
+        width: 890px;
+        margin: 30px auto;
+        position: relative;
+      }
+      .jumbotron-red {
+        transition: height .1s;
+        background: #FFF;
+        position: absolute;
+        left: 0;
+        top: 0;
+        overflow: hidden
+      }
+      .empty {
+        height: 300px
+      }
+    </style>
   </head>
   <body>
-    
+  <div class="empty"></div>
+    <div data-v-4683e6c2="" class="jumbotron">
+      <img data-v-4683e6c2="" src="./assets/images/theme-index-blue.png" alt="">
+      <div data-v-4683e6c2="" class="jumbotron-red" style="height: 0x;" id="jumbotron-red">
+        <img data-v-4683e6c2="" src="./assets/images/theme-index-red.png" alt="">
+      </div>
+    </div>
+    <div class="empty"></div>
     <script>
-      
+      document.addEventListener('scroll', function() {
+        document.getElementById('jumbotron-red').setAttribute('style', `height: ${window.scrollY}px`)
+      })
     </script>
   </body>
 </html>	
