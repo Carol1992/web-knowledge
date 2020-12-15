@@ -3,15 +3,27 @@
   <head>
     <title></title>
     <meta charset="utf-8">
-    
+
   </head>
   <body>
-    call, bind, apply显式绑定
-    隐形绑定，如果一个对象中有一个函数，这个函数中的this指向这个对象
-    new 绑定，使用new新建一个实例，this指向这个新建的实例
-    非严格模式下默认绑定到全局，严格模式下this为undefined
+    <div>
+      the JS keyword this refers the object it belongs to
+    </div>
+    <div>
+      call/apply, bind显式绑定
+      隐形绑定，如果一个对象中有一个函数，这个函数中的this指向这个对象
+      new 绑定，使用new新建一个实例，this指向这个新建的实例
+      非严格模式下默认绑定到全局，严格模式下this为undefined
+      In an event, this refers to the element that received the event.
+      </div>
+      <div>
+        function.call(operator, a, b, c) ==> this 指向 operator, a,b,c是参数
+        call()方法的作用和 apply() 方法类似，区别就是call()方法接受的是参数列表，而apply()方法接受的是一个参数数组。
+        call/apply invokes the function immediately, whereas bind creates a function, when later executed, will
+        have a certain context.
+      </div>
     <script>
-      
+
     </script>
   </body>
 </html>

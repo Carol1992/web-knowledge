@@ -5,7 +5,7 @@
 
 每个 Vue 实例在被创建时都要经过一系列的初始化过程——例如，需要设置数据监听、编译模板、将实例挂载到 DOM 并在数据变化时更新 DOM 等。同时在这个过程中也会运行一些叫做生命周期钩子的函数，这给了用户在不同阶段添加自己的代码的机会。
 
-箭头函数并没有 this，this 会作为变量一直向上级词法作用域查找，直至找到为止
+箭头函数并没有 this，this 会作为变量一直向上级词法作用域查找，直至找到为止；箭头函数不能通过call,apply, bind 动态绑定
 
 Vue.js 使用了基于 HTML 的模板语法, 在底层的实现上，Vue 将模板编译成虚拟 DOM 渲染函数。也可以不用模板，直接写渲染 (render) 函数，使用可选的 JSX 语法。
 
@@ -44,6 +44,17 @@ v-on 事件监听器在 DOM 模板中会被自动转换为全小写 (因为 HTML
 在一个组件的根元素上直接监听一个原生事件: .native修饰符
 
 子组件触发父组件对props值的更新的简化写法: .sync修饰符
+```js
+<text-document
+  v-bind:title="doc.title"
+  v-on:update:title="doc.title = $event"
+></text-document>
+
+||
+\/
+
+<text-document v-bind:title.sync="doc.title"></text-document>
+```
 
 有时为一个插槽设置具体的后备 (也就是默认的) 内容是很有用的，它只会在没有提供内容的时候被渲染。  
 

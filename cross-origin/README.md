@@ -5,3 +5,18 @@
 
 ### options机制
 跨域请求的情况下，post请求前会先使用OPTIONS方法发起一个预检请求，因为post请求可能对服务器数据产生副作用，浏览器必须预先通过发送一个预检请求给服务端，确定是否允许该请求，允许则发起实际的请求
+
+### 解决跨域
+vue配置文件：devServer => proxy => target
+
+### XMLhttpRequest 
+```js
+let xhttp = new XMLhTTPRequest()
+xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("demo").innerHTML = this.responseText;
+  }
+};
+xhttp.open("GET", "ajax_info.txt", true);
+xhttp.send();
+```

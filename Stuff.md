@@ -1,55 +1,3 @@
-#### 001.如何修改chrome记住密码后自动填充表单的黄色背景 ？
-```html
-input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
-    background-color: rgb(250, 255, 189); /* #FAFFBD; */
-    background-image: none;
-    color: rgb(0, 0, 0);
-  }
-```
-备注：还有其他方法，输入密码的输入框通常我们会设置为 type="password", 这样浏览器就识别到了，那么我们就设置为 type="text":
-```html
-<div class="account bkg02">
-    <div class="password">
-        <input type="text" placeholder="请输入密码" maxlength="22" onfocus="this.type='password'">
-    </div>
-</div>
-
-<!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
-<input style="display:none" type="text" name="fakeusernameremembered"/>
-<input style="display:none" type="password" name="fakepasswordremembered"/>
-```
-#### 002.js 中判断 null, undefined blank 值
-You can just check if the variable has a truthy value or not. That means
-```js
-if( value ) {}
-```
-will evaluate to true if value is not:
-```js
-null
-undefined
-NaN
-empty string ("")
-0
-false
-```
-#### 003.npm install 国内用淘宝的镜像：
-```js
-$ npm install -g cnpm --registry=https://registry.npm.taobao.org # 全局安装 cnpm
-$ cnpm i
-```
-善用 Webpack 的路径别名
-```js
-import FooBar from '../../../../components/FooBar' // Bad  
-import FooBar from '@/components/FooBar'           // Good
-```
-#### 004.javascript 中 this 的理解：
-如果不位于任何函数内，this 指的是全局对象，在浏览器中指 window；
-
-在 'strict mode' 模式下，this 的值根据代码的人指定，没有指定则为 undefined；
-this 指的是调用函数的那个对象；
-
-apply 和 call 的作用是改变函数的调用对象，以 apply 为例，它的第一个参数就代表改变后调用这个函数的对象，因此， this 指的就是这第一个参数，当参数为空时，默认为全局对象
-
 #### javascript 的内存管理和栈堆队列的理解
 内存生命周期：分配你所需要的内存，使用分配到的内存进行读写等操作，释放不需要的内存。
 
@@ -87,54 +35,6 @@ mac下：lsof -i:3000
 1. WinSCP + PuTTY
 2. Xshell + Xftp
 
-#### 如何清除IE10+ input X 文本框的叉叉和密码输入框的眼睛图标
-
-其中 ::-ms-clear 是文本清除按钮，也就是input右方的叉叉 ::-ms-reveal是密码查看按钮，也就密码框右边的小眼睛。
-```css
-input::-ms-clear,
-input::-ms-reveal
-{
-    display:none;
-}
-```
-
-#### 如何在IE中改变属性为disabled的下拉框的文本颜色
-```css
-/*css style for IE*/
-select[disabled='disabled']::-ms-value {
-    color: #fff;
-}
-/*Specific to chrome and firefox*/
-select[disabled='disabled'] {
-    color: #fff;
-}
-```
-
-#### 如何自定义下拉框（清除各个浏览器下的默认样式）
-```css
-select {
-  /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
-  border: solid 1px #000;
-
-  /*很关键：将默认的select选择框样式清除*/
-  appearance:none;
-  -moz-appearance:none;
-  -webkit-appearance:none;
-
-  /*在选择框的最右侧中间显示小箭头图片*/
-  background: url("http://ourjs.github.io/static/2015/arrow.png") no-repeat scroll right center transparent;
-
-
-  /*为下拉小箭头留出一点位置，避免被文字覆盖，根据小箭头的尺寸来决定*/
-  padding-right: 14px;
-}
-
-
-/*清除ie的默认选择框样式清除，隐藏下拉箭头*/
-select::-ms-expand { display: none; }
-
-```
-
 #### 如何自定义滚动条
 ```css
  /* 设置垂直滚动条的宽度和水平滚动条的高度 */
@@ -161,33 +61,6 @@ select::-ms-expand { display: none; }
     /*background-color: black;*/
   }
   }
-```
-
-```js
-@keyup.enter='goRegister'
-
-<router-link :to="...">
-<router-link :to="..." replace>
-
-router.go(n)
-
-// literal string path
-router.push('home')
-
-// object
-router.push({ path: 'home' })
-
-// named route
-router.push({ name: 'user', params: { userId: 123 }})
-
-// with query, resulting in /register?plan=private
-router.push({ path: 'register', query: { plan: 'private' }})
-
-const userId = 123
-router.push({ name: 'user', params: { userId }}) // -> /user/123
-router.push({ path: `/user/${userId}` }) // -> /user/123
-// This will NOT work
-router.push({ path: '/user', params: { userId }}) // -> /user
 ```
 
 #### 浏览器接入摄像头拍照，对图片进行检验后上传到服务器
@@ -437,17 +310,6 @@ cnpm install sass-loader node-sass --save-dev
 /* write SASS! */
 </style>
 ```
-
-
-#### vue-cli脚手架开发完成后执行npm run build部署到生产环境
-1. 如果不想在浏览器中看到组件的内容，则在config/index.js中将productionSourceMap的值改为false
-2. 如果使用了webpack的proxyTable对API请求进行转发，假设线上环境就不存在跨域问题，则需要将proxyTable的功能取消
-3. 执行npm run build，可以看到我们部署到生产环境所需的资源都在dist文件夹中(index.html + static文件夹(css文件夹+js文件夹+img文件夹))
-4. 生产环境中需要给我的应用指定一个端口让我可以通过域名和端口号访问到我的index.html，这样就OK了
-5. 开发环境的所有资源一共有100+M，打包后只剩下3.5M左右，大大节省了服务器空间，由于文件被压缩，节省了带宽，访问速度也变快了。
-6. 期间可见前端工程化的思想，在开发过程中使用vue组件，又可体现前端组件化的思想。
-7. 结论：通过这个ai标注平台自己真的学到好些东西，可以准备下几次面试了。
-
 
 #### vue中应该注意的事项
 1. Component names should always be multi-word, except for root App components.
@@ -837,30 +699,6 @@ axios.interceptors.response.use(function(res){
 #### 前端在通过API接口获取后台数据，根据后台提供的字段取值的时候，因为担心某些字段后台接口没有定义，为避免出现'undefined'的情况，可能会使用“或”连接符连接一个空字符串(|| '')，慎用该方法，因为字段如果是“0/undefined/null/""/false”，最终都会取得该空字符串。可是在数据库中，id为0对应的数据也许是存在的，不应该取空字符串。
 
 
-#### 遇到了一个坑：vuex储存登录用户的信息，如用户姓名、权限、id、token等，但是一刷新页面这些数据就丢失了，可是又说用localstorage储存用户信息不安全
-
-
-#### 接下来的计划
-1. 购买域名和服务器，遵守国家规章制度，用于打造自己的网站和标签（5年）==实际买了10年期限的==
-2. 设计自己的网站，网站的定位是技术分享和个人生活分享。技术分享每篇文章包含所讲技术的步骤、代码、讲解、演示、参考链接等；个人分享可以写心得、小说、散文、游记等 ==实际做成了一个图片网站==
-3. 时间规划：网站规划（1个星期）；购买域名服务器和认证+网站开发（1个月）==完成==
-4. 每周写1-2篇文章，不追求数量追求质量
-5. 学习mongodb数据库，建立数据库，对数据库进行操作。==实际使用的是MySQL==
-6. 网站部署，包括数据库、业务逻辑、静态资源等 ==完成==
-7. 了解和熟知数据可视化的应用行业，新的一个思路是降低终端用户对于数据挖掘和数据分析的门槛，有传统的商业行业，也有比较专业化的行业，如机器学习行业、数据挖掘行业
-8. 大屏全屏自适应解决方案
-9. 2D+3D+用户交互+websocket对实时数据的一个推送
-10. 还是使用mysql+nodejs+vue+vuex的一个开发方案，借鉴阿里云的datav等可视化行业非常优秀的方案
-11. 了解如何在一台机器上挂载多个网站，因为我有一台阿里云ECS服务器，目前后台程序跑的默认端口为80，如果有多个网站呢，每个网站的端口应该是不一样的，域名也是不一样的，也就是需要一个域名和服务器各个端口的一个映射，还有，域名下面如何设置子域名
-12. 读源码，积累组件，积累自己的开发工具和库
-
-
-
-#### 常用的登录注册用正则表达式
-```js
-
-```
-
 #### 预加载
 充分利用用户操作间隙时间进行图片或文件的预加载，这样等到用户访问到这些资源的时候，浏览器会自动使用缓存，可以提升用户体验
 ```js
@@ -1055,8 +893,6 @@ http {
 
 #### 选择器
 ```js
-The querySelector() method returns the first element that matches a specified CSS selector(s) in the document
-To return all the matches, use the querySelectorAll() method instead.
 
 //文字竖着排列
 -ms-writing-mode: tb-rl;
@@ -1090,15 +926,6 @@ removeAttribute():
 hasAttribute():
 ```
 
-#### git
-```js
-1. git branch
-2. git checkout -b dev
-3. git checkout master
-4. git merge dev
-5. git branch -d dev
-```
-
 #### vue中怎么引入scss文件
 ```js
 //https://segmentfault.com/q/1010000008731809
@@ -1128,11 +955,6 @@ console.log(this.$i18n.t('msg.common.model'))
 2. https://zhuanlan.zhihu.com/p/26204569
 
 
-#### Lodash
-1. lodash主要使用了延迟计算，使得lodash其性能远远超过Underscore。在lodash中延迟计算意味着在我们的链式方法在显示或隐式的value()调用之前是不会执行的。由于这种执行的延后，因此lodash可以进行shortcut fusion这样的优化，通过合并链式iteratee大大降低迭代的次数。从而大大提供其执行性能。
-2. Lodash makes JavaScript easier by taking the hassle out of working with arrays,
-numbers, objects, strings, etc. Lodash’s modular methods are great for: Iterating arrays, objects, & strings; Manipulating & testing values; Creating composite functions
-
 #### v-model一个computed属性
 If you're going to v-model a computed, it needs a setter. Whatever you want it to do with the updated value (probably write it to the $store, considering that's what your getter pulls it from) you do in the setter.
 
@@ -1147,24 +969,6 @@ If you want to have an intermediate state, where it's saved somewhere but doesn'
 3. firebase: https://console.firebase.google.com/
 4. vinyl-fs: Vinyl is a very simple metadata object that describes a file. When you think of a file, two attributes come to mind: path and contents. These are the main attributes on a Vinyl object. A file does not necessarily represent something on your computer’s file system. You have files on S3, FTP, Dropbox, Box, CloudThingly.io and other services. Vinyl can be used to describe files from all of these sources. While Vinyl provides a clean way to describe a file, we now need a way to access these files. Each file source needs what we call a "Vinyl adapter". A Vinyl adapter simply exposes a src(globs) and a dest(folder) method. Each return a stream. The src stream produces Vinyl objects, and the dest stream consumes Vinyl objects. Vinyl adapters can expose extra methods that might be specific to their input/output medium, such as the symlink method vinyl-fs provides.
 
-
-#### 常用的正则表达式
-1. 验证邮箱
-```js
-var emailRE = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-```
-
-
-#### h5新增的hash变化
-```js
-window.addEventListener('hashchange', function () {
-    //todo
-})
-```
-
-#### 浏览器用户代理
-1. The userAgent property returns the value of the user-agent header sent by the browser to the server.
-2. The value returned, contains information about the name, version and platform of the browser.
 
 #### css高度坍塌问题
 1. https://www.jianshu.com/p/a17c0f9735d9
@@ -1185,50 +989,6 @@ window.addEventListener('hashchange', function () {
  }
  
 5. 触发BFC机制（Block formatting contexts 块格式上下文），解决问题：元素中出现float不为none、position:absolute;、overflow不为visible的时候都会触发BFC机制。触发BFC后会为它的内容建立新的块格式化的上下文，就是格式化一下上下文即重新计算这个元素。这个计算就包括了内部所有元素包含了浮动的元素，因此才会解决塌陷问题。
-```
-
-#### 数组操作
-```js
-//删去b数组中跟a数组一样的元素
-remove_duplicates (a, b) {
-	for (var i = 0; i < a.length; i++) { 
-        for (var j = 0; j < b.length; j++) { 
-            if (a[i].user_id === b[j].user_id) {
-              b.splice(j, 1)
-            }
-        }
-    }
-}
-
-//filter 和 includes
-let arr1 = [
-	{user_id: '02020',user_name: 'carol'},
-	{user_id: '02021',user_name: 'carol'},
-	{user_id: '02022',user_name: 'carol'},
-	{user_id: '02023',user_name: 'carol'},
-]
-let arr3 = arr1.filter((val, idx, arr1) => !val.user_id.includes('2022'))
-console.log(arr3) 
-let idx = arr3.findIndex((val, idx, arr3) => val.user_id === '02021')
-console.log(idx)
-```
-
-#### 更改placeholder的颜色
-```
-::-webkit-input-placeholder { /* WebKit browsers */
-    color: #6E7FAD;
-}
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color: #6E7FAD;
-   opacity:  1;
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color: #6E7FAD;
-   opacity:  1;
-}
-:-ms-input-placeholder { /* Internet Explorer 10+ */
-   color: #6E7FAD;
-}
 ```
 
 #### JS判断是移动端浏览器还是PC端
@@ -1666,53 +1426,6 @@ npm list -g --depth=0
 </html>
 ```
 
-### d3 依赖(31个)
-```js
-d3-zoom
-d3-array
-d3-axis
-d3-collection
-d3-color
-d3-format
-d3-hierarchy
-d3-selection
-d3-shape
-d3-transition
-d3-scale
-d3-scale-chromatic
-d3-time
-d3-time-format
-d3-timer
-d3-dsv
-d3-fetch
-d3-random
-d3-geo
-d3-voronoi
-d3-brush
-d3-chord
-d3-contour
-d3-dispatch
-d3-drag
-d3-ease
-d3-force
-d3-path
-d3-polygon
-d3-quadtree
-d3-interpolate
-```
-
-### 递归，闭包，原型链，设计模式
-
-
-### 正则表达式
-
-
-### Vue 插件实操
-
-
-### 深入理解webpack
-
-
 ### python serve
 ```
 python -m http.server 
@@ -1770,31 +1483,6 @@ var config_2 = Object.assign({}, config,{
 module.exports = [
   config_1, config_2      
 ];
-```
-
-```
-在 JavaScript 中，true && expression 总是返回 expression，而 false && expression 总是返回 false。
-
-因此，如果条件是 true，&& 右侧的元素就会被渲染，如果是 false，React 会忽略并跳过它。
-```
-
-```
-1. react
-2. 移动端
-3. 小程序
-4. angular
-5. nodejs
-6. 补充其他图表：tree, hot-map, other map chart, sankey, etc
-7. other computer knowledge or skills
-8. make your resume prettier
-```
-
-```
-5:30-7:00 wash, eat, exercise
-7:00-8:30 online learning
-12:30-13:30 online learning
-21:00-22:30 learning, or coding, or reading
-22:30-23:30 go to sleep or just hanging around
 ```
 
 ```js
